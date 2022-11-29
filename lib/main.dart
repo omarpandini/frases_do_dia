@@ -1,67 +1,82 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(myAppV1());
+  runApp(MaterialApp(
+    home: Home(),
+    debugShowCheckedModeBanner: false,
+  ));
 }
 
-Widget myAppV1() {
-  const text1 = Text(
-    "Neque porro quisquam estaa",
-    textAlign: TextAlign.justify,
-    style: TextStyle(
-        fontSize: 30,
-        color: Colors.black,
-        fontWeight: FontWeight.normal,
-        letterSpacing: 2,
-        decoration: TextDecoration.underline,
-        decorationColor: Colors.black,
-        decorationStyle: TextDecorationStyle.solid),
-  );
+class Home extends StatefulWidget {
+  const Home({super.key});
 
-  const text2 = Text(
-    "Texto 2",
-    textAlign: TextAlign.justify,
-    style: TextStyle(
-        fontSize: 30,
-        color: Colors.black,
-        fontWeight: FontWeight.normal,
-        letterSpacing: 2,
-        decoration: TextDecoration.underline,
-        decorationColor: Colors.black,
-        decorationStyle: TextDecorationStyle.solid),
-  );
+  @override
+  State<Home> createState() => _HomeState();
+}
 
-  return MaterialApp(
-    title: "Frases do Dia",
-    home: Container(
-      padding: const EdgeInsets.fromLTRB(30, 50, 30, 30),
-      margin: const EdgeInsets.all(30),
-      decoration:
-          BoxDecoration(border: Border.all(width: 3, color: Colors.black)),
-      //color: Colors.amber,
-      child: Column(
-        children: const [
-          //Botão simples
-          /*
-          FloatingActionButton(
-            onPressed: imprimir,
-            child: Text(
-              "Clique Aqui",
-              style: TextStyle(fontSize: 10),
-            ),
-          )*/
+class _HomeState extends State<Home> {
+  var _novaFrase = '';
 
-          // Textos / Estilos
-          text1,
-          Padding(padding: EdgeInsets.all(30)),
-          text2
-        ],
+  final _frases = [
+    'Frase 1',
+    'Frase 2',
+    'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+  ];
+
+  void _gerarFrase() {
+    setState(() {
+      var num = Random().nextInt(_frases.length);
+      _novaFrase = _frases[num];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Frases do Dia'),
+        backgroundColor: Colors.green,
       ),
-    ),
-    //home: Container(color: Colors.white,),
-  );
-}
-
-void imprimir() {
-  print("clicou");
+      body: Center(
+        child: Container(
+          padding: EdgeInsets.all(10),
+          // decoration:
+          //     BoxDecoration(border: Border.all(width: 3, color: Colors.amber)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                'images/logo.png',
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Clique Abaixo Para Gerar Uma Frase!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 25),
+                ),
+              ),
+              Text(
+                '$_novaFrase',
+                style: TextStyle(fontSize: 30, fontStyle: FontStyle.italic),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    _gerarFrase();
+                  },
+                  child: Text(
+                    'Nova Frase',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
